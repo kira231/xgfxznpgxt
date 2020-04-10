@@ -238,7 +238,7 @@ export default {
       var t1 = []
       var t2 = []
       var tDate = []
-      for (var i in tlist) {
+      for (var i = tlist.length - 1; i >= 0; i--) {
         tDate.push(tlist[i].RecordDate.substring(5, 10))
         t1.push(Number(tlist[i].TemperMorning))//上午体温
         t2.push(Number(tlist[i].TemperNight))//下午体温
