@@ -22,11 +22,15 @@
             <input type="radio" value="1" v-model="form.gender">男
             <input type="radio" value="2" v-model="form.gender">女
           </div>
+          <div id="age">
+            <span class="text1">年龄</span>
+            <input class="input1" v-model="form.age" placeholder="请填写年龄" />
+          </div>
 
-          <div id="birthday">
+          <!-- <div id="birthday">
             <span class="text1">出生年月</span>
             <input class="input1" v-model="form.birthday" placeholder="请填写出生年月" />
-          </div>
+          </div> -->
           <div id="phone">
             <span class="text1">联系方式</span>
             <input class="input1" type="number" pattern="[0-9]*" v-model="form.phone" placeholder="请填写手机号" />
@@ -37,7 +41,7 @@
             <input type="radio" value="1" v-model="form.pregnant">是
             <input type="radio" value="2" v-model="form.pregnant">不清楚
           </div>
-          <div id="occupation">
+          <!-- <div id="occupation">
             <span class="text2">职业</span>
             <input class="input1" v-model="form.occupation" placeholder="请填写职业" />
           </div>
@@ -50,26 +54,26 @@
             <input class="input1" v-model="form.IDcard" placeholder="请填写身份证号" />
           </div>
           <div id="checkInRoom">
-            <span class="text1">入住房间</span>
+            <span class="text2">入住房间</span>
             <input class="input1" v-model="form.checkInRoom" placeholder="请填写入住房间" />
           </div>
           <div id="checkInTime">
-            <span class="text1">入住时间</span>
+            <span class="text2">入住时间</span>
             <input class="input1" v-model="form.checkInTime" placeholder="请填写入住时间(yyyy-mm-dd)" />
           </div>
           <div id="leaveTime">
-            <span class="text1">解除时间</span>
+            <span class="text2">解除时间</span>
             <input class="input1" v-model="form.leaveTime" placeholder="请填写接触观察时间" />
           </div>
           <div id="lastContactTime">
-            <span class="text1">末次接触时间</span>
+            <span class="text2">末次接触时间</span>
             <input class="input1" v-model="form.lastContactTime" placeholder="请填写末次接触时间" />
           </div>
 
           <div id="contactHistory">
-            <span class="text1">手写接触史</span>
+            <span class="text2">简要接触史</span>
             <input class="input1" v-model="form.contactHistory" placeholder="请填写简要接触史" />
-          </div>
+          </div> -->
 
         </div>
       </div>
@@ -320,6 +324,7 @@ export default {
       form: {
         name: '',
         gender: 1,
+        age: '',
         phone: '',
         birthday: '',
         address: '',
@@ -344,9 +349,6 @@ export default {
         question10: [],
         question11: [],
         question12: [],
-
-
-
       },
       options1: [
         {
@@ -581,41 +583,46 @@ export default {
           this.setItemscroll('name')
         });
       }
-      else if (this.form.birthday == '') {
-        MessageBox.alert('请填写出生年月').then(action => {
-          this.setItemscroll('birthday')
+      else if (this.form.age == '') {
+        MessageBox.alert('请填写年龄').then(action => {
+          this.setItemscroll('age')
         });
       }
+      // else if (this.form.birthday == '') {
+      //   MessageBox.alert('请填写出生年月').then(action => {
+      //     this.setItemscroll('birthday')
+      //   });
+      // }
       else if (this.form.phone == '') {
         MessageBox.alert('请填写联系方式').then(action => {
           this.setItemscroll('phone')
         });
       }
-      else if (this.form.checkInRoom == '') {
-        MessageBox.alert('请填写入住房间').then(action => {
-          this.setItemscroll('checkInRoom')
-        });
-      }
-      else if (this.form.checkInTime == '') {
-        MessageBox.alert('请填写入住时间').then(action => {
-          this.setItemscroll('checkInTime')
-        });
-      }
-      else if (this.form.leaveTime == '') {
-        MessageBox.alert('请填写预计解除时间').then(action => {
-          this.setItemscroll('leaveTime')
-        });
-      }
-      else if (this.form.lastContactTime == '') {
-        MessageBox.alert('请填写末次接触时间').then(action => {
-          this.setItemscroll('lastContactTime')
-        });
-      }
-      else if (this.form.contactHistory == '') {
-        MessageBox.alert('请填写手写接触史').then(action => {
-          this.setItemscroll('contactHistory')
-        });
-      }
+      // else if (this.form.checkInRoom == '') {
+      //   MessageBox.alert('请填写入住房间').then(action => {
+      //     this.setItemscroll('checkInRoom')
+      //   });
+      // }
+      // else if (this.form.checkInTime == '') {
+      //   MessageBox.alert('请填写入住时间').then(action => {
+      //     this.setItemscroll('checkInTime')
+      //   });
+      // }
+      // else if (this.form.leaveTime == '') {
+      //   MessageBox.alert('请填写预计解除时间').then(action => {
+      //     this.setItemscroll('leaveTime')
+      //   });
+      // }
+      // else if (this.form.lastContactTime == '') {
+      //   MessageBox.alert('请填写末次接触时间').then(action => {
+      //     this.setItemscroll('lastContactTime')
+      //   });
+      // }
+      // else if (this.form.contactHistory == '') {
+      //   MessageBox.alert('请填写简要接触史').then(action => {
+      //     this.setItemscroll('contactHistory')
+      //   });
+      // }
       else if (this.form.question1.length < 1) {
         MessageBox.alert('请填写Q1').then(action => {
           this.setItemscroll('q1')
@@ -779,12 +786,12 @@ export default {
           "patientId": this.$route.query.id,
           "name": this.form.name,
           "gender": this.form.gender,
-          "age": 25,
+          "age": this.form.age,
           "birthday": this.form.birthday,
           "phone": this.form.phone,
           "address": this.form.address,
           "IDcard": this.form.IDcard,
-          "submitUser": '沈猪一',
+          "submitUser": '',
           "pregnant": this.form.pregnant,
           "checkInRoom": this.form.checkInRoom,
           "checkInTime": this.form.checkInTime,
@@ -806,6 +813,9 @@ export default {
           "q12": q12d,
         }).then(response => {
           console.log(response.data.results)
+          MessageBox.alert('填写成功').then(action => {
+            this.$router.back(-1)
+          })
 
 
         })

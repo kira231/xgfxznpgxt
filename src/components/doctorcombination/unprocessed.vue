@@ -17,7 +17,7 @@
 
     <div v-for="item in unprocessedlist" :key="item.unprocessedid">
       <a href="javascript:void(0);" @click="todetail(item.patientid)" style="color:black">
-        <div class="card">
+        <div class="cardlist">
           <div v-if="item.risk == '3'">
             <div class="leftside" style="background:red"></div>
             <div class="iconside" style="color:red"> <i class="iconfont icon-fengxian" style="font-size:30px"></i></div>
@@ -45,8 +45,8 @@
             </div>
           </div>
           <div v-if="item.risk == '0'">
-            <div class="leftside" style="background:black"></div>
-            <div class="iconside" style="color:black"> <i class="iconfont icon-fengxian" style="font-size:30px;"></i>
+            <div class="leftside" style="background:green"></div>
+            <div class="iconside" style="color:green"> <i class="iconfont icon-fengxian" style="font-size:30px;"></i>
             </div>
             <div class="rightside">
               <span>{{item.name+"&nbsp;&nbsp;&nbsp;&nbsp;"+item.gender+"&nbsp;&nbsp;&nbsp;&nbsp;"+item.age+'岁'+"&nbsp;&nbsp;&nbsp;&nbsp;"+'风险：暂无风险'}}</span><br>
@@ -99,7 +99,7 @@ export default {
               age:item.Age,
               phone:item.Phone,
               updatetime:item.SubmitDate,
-              risk:item.MachineRes
+              risk:item.MachineRes,
             }
           })
         })
@@ -108,22 +108,22 @@ export default {
         })
     },
 
-    todetail (patientid) {
-      this.$router.push({ name: "/doctor/patdetailmod", query: {id:patientid,realeaseFlag:'1'} })
+    todetail (patientid) {     
+      this.$router.push({ name: "/doctor/patdetailmod", query: {id:patientid} })
     },
   },
 }
 </script>
 
 <style>
-.card {
+.cardlist {
   text-align: left;
   margin: 10px;
   width: 100%;
   height: 60px;
   overflow: hidden;
 }
-.card .leftside {
+.cardlist .leftside {
   width: 8px;
   float: left;
   height: 60px;
@@ -131,17 +131,17 @@ export default {
   /* height: 30px; */
   border-radius: 8px 0px 0px 8px;
 }
-.card .iconside {
+.cardlist .iconside {
   padding: 0px 10px;
   float: left;
   height: 60px;
   line-height: 60px;
 }
-.card .rightside {
+.cardlist .rightside {
   float: left;
   padding: 5px;
 }
-.card .righticon {
+.cardlist .righticon {
   float: right;
   height: 60px;
   line-height: 60px;

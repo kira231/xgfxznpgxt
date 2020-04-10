@@ -182,7 +182,7 @@ export default {
       }).then(response => {
         // console.log(response.data.results[0])
         this.evlist = []
-        const colorlist = new Map([[0, 'grey'], [1, 'green'], [2, 'blue'], [3, 'red']])
+        const colorlist = new Map([[0, 'green'], [1, 'green'], [2, 'blue'], [3, 'red']])
         const textlist = new Map([[0, '暂无风险'], [1, '低风险'], [2, '中风险'], [3, '高风险']])
         var dd = response.data.results
         this.evlist = dd.map(item => {
