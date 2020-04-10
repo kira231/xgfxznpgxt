@@ -11,16 +11,6 @@
         @click="$router.push({name:'/patient/form',query:{id:$route.query.id}})"><i
           class="iconfont icon-bianji"></i>&nbsp;更新信息
       </div>
-
-      <div v-if="role=='doctor'&&qflag=='true'">
-        <div class="updateinfo" @click="$router.push({name:'/patient/form',query:{id:$route.query.id}})"><i
-            class="iconfont icon-bianji"></i>&nbsp;更新信息
-        </div>
-        <mt-button @click.native="sheetVisible = true" size="small" type="danger" style="margin-left:20px">解除隔离
-        </mt-button>
-        <mt-actionsheet :actions="actions" v-model="sheetVisible"></mt-actionsheet>
-      </div>
-
       <div v-else class="updatetime">报告人:{{evform.SubmitUser}}</div>
     </div>
     <div class="cardheader" :style="{'background':evform.color}"></div>
@@ -30,9 +20,16 @@
     <!-- <div>
       &nbsp; &nbsp; &nbsp; <mt-button type="primary" size="small" @click="showdetails()">查看风险详情</mt-button>
     </div> -->
-    <div v-if="unrealease">
-      &nbsp; &nbsp; &nbsp; <mt-button type="primary" size="small">解除隔离</mt-button>
+    <div v-if="role=='doctor'&&completetag==0&&qflag=='true'">
+      <div class="updateinfo"
+        @click="$router.push({name:'/patient/form',query:{id:$route.query.id}})"><i
+          class="iconfont icon-bianji"></i>&nbsp;更新信息
+      </div>
+      <mt-button @click.native="sheetVisible = true" size="small" type="danger" style="margin-left:20px">解除隔离
+      </mt-button>
+      <mt-actionsheet :actions="actions" v-model="sheetVisible"></mt-actionsheet>
     </div>
+
     <div class="cardcontainer" id="id1">
 
       <div class="litext1"> <i class="iconfont icon-shugang"></i>基本信息</div>
@@ -81,13 +78,13 @@
 </template>
 <script>
 import axios from 'axios'
+import { MessageBox } from 'mint-ui'
 export default {
 
   // 怀孕0无1有2不清楚，性别1男2女
   props: ['reportId', 'qflag'],
   data () {
     return {
-      unrealease: this.$route.params.realeaseFlag,
       evform: {
         SubmitDate: '',
         SubmitUser: '',
@@ -95,7 +92,7 @@ export default {
       role: window.localStorage.getItem("role"),
       sheetVisible: false,
       actions: [],
-
+      completetag:''
 
     }
   },
@@ -108,8 +105,14 @@ export default {
         // this.gettemplist(this.$route.query.id)
         // this.drawline()
       }
-
-    }
+    },
+    popupVisible(val) {
+        if (val) {
+          setTimeout(() => {
+            this.popupVisible = false;
+          }, 2000);
+        }
+      }
 
   },
   filters: {
@@ -154,8 +157,10 @@ export default {
   //router.push会带params，所以没关系。过来的话会先执行mounted
   mounted () {
     this.gettemplist(this.$route.query.id)
+    this.getEvaluation()
     console.log('assr mounted 画图')
     // this.drawline()
+    // console.log(this.$route.query.id)
 
     this.actions = [{
       name: '确定解除隔离',
@@ -165,6 +170,7 @@ export default {
   // 当引入keep-alive的时候，页面第一次进入，钩子的触发顺序created-> mounted-> activated，退出时触发deactivated。当再次进入（前进或者后退）时，只触发activated。
   activated () {
     this.gettemplist(this.$route.query.id)
+    // this.getEvaluation()
     console.log('assr activated 画图')
     // this.drawline()
   },
@@ -174,10 +180,12 @@ export default {
   },
   methods: {
     setCompeletTag () {
-      axios.post('/setCompeletTag', { "patientId": this.$route.query.id, completeTag: '1' })
+      axios.post('/setCompeletTag', {"patientId": this.$route.query.id,completeTag:1})
         .catch(function (error) {
           console.log('error', error)
         })
+      this.completetag=1
+      MessageBox.alert('解除隔离成功！')
     },
     gettemplist (val) {
       // var p1 = axios.post('/getTemperMorningList', {
@@ -270,9 +278,9 @@ export default {
         "patientId": this.$route.query.id
       }).then(response => {
         // console.log(response.data.results[0])
-        this.evform = response.data.results[0]
+        // this.evform = response.data.results[0]
+        this.completetag=response.data.results[0].CompleteTag
         console.log('gete')
-
       })
         .catch(function (error) {
           console.log('error', error)
@@ -367,18 +375,5 @@ export default {
   height: 200px;
   margin: auto;
 }
-@component-namespace page {
-  @component actionsheet {
-    @descendent wrapper {
-      padding: 0 20px;
-      position: absolute 50% * * *;
-      width: 100%;
-      transform: translateY(-50%);
-
-      button:first-child {
-        margin-bottom: 20px;
-      }
-    }
-  }
-}
+    
 </style>

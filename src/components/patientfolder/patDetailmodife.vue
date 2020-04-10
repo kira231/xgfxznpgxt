@@ -59,7 +59,6 @@ export default {
         "patientId": this.$route.query.id
       }).then(response => {
         this.reportId = response.data.results[0].EvaluID
-
       })
         .catch(function (error) {
           console.log('error', error)
